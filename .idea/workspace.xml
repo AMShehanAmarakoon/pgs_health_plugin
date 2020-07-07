@@ -45,10 +45,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="326" y="69" key="CommitChangelistDialog2" timestamp="1594121074360">
+    <state x="326" y="69" key="CommitChangelistDialog2" timestamp="1594121102777">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
-    <state x="326" y="69" key="CommitChangelistDialog2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594121074360" />
+    <state x="326" y="69" key="CommitChangelistDialog2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594121102777" />
     <state width="583" height="582" key="DebuggerActiveHint" timestamp="1594117464205">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
@@ -69,5 +69,9 @@
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
     <state width="1574" height="330" key="GridCell.Tab.0.right/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594117697287" />
+    <state x="366" y="213" key="Vcs.Push.Dialog.v2" timestamp="1594121105717">
+      <screen x="52" y="23" width="1628" height="1027" />
+    </state>
+    <state x="366" y="213" key="Vcs.Push.Dialog.v2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594121105717" />
   </component>
 </project>
