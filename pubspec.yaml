@@ -2,7 +2,7 @@ name: pgs_health_plugin
 description: A new Flutter plugin.
 version: 0.0.1
 author: Shehan Amarakoon (PGS)
-homepage:
+homepage: https://github.com/AMShehanAmarakoon/pgs_health_plugin.git
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
