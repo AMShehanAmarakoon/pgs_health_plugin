@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - pgs_health_plugin (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - pgs_health_plugin (from `.symlinks/plugins/pgs_health_plugin/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  pgs_health_plugin:
+    :path: ".symlinks/plugins/pgs_health_plugin/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  pgs_health_plugin: cfdb5868a1d19a84c3bf996c352f4f636516ccb0
+
+PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
+
+COCOAPODS: 1.8.3
