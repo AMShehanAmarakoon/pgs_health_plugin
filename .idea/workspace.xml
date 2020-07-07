@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ba4e2dc3-12d7-4de0-8966-099729bfb2d7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="ba4e2dc3-12d7-4de0-8966-099729bfb2d7" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,13 +35,29 @@
       <option name="presentableId" value="Default" />
       <updated>1594111177138</updated>
     </task>
+    <task id="LOCAL-00001" summary="Initial commit 2">
+      <created>1594121102906</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1594121102906</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial commit 2" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="326" y="69" key="CommitChangelistDialog2" timestamp="1594121102777">
+    <state x="366" y="121" key="#Notifications" timestamp="1594121179721">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
-    <state x="326" y="69" key="CommitChangelistDialog2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594121102777" />
+    <state x="366" y="121" key="#Notifications/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594121179721" />
+    <state x="326" y="69" key="CommitChangelistDialog2" timestamp="1594121170555">
+      <screen x="52" y="23" width="1628" height="1027" />
+    </state>
+    <state x="326" y="69" key="CommitChangelistDialog2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594121170555" />
     <state width="583" height="582" key="DebuggerActiveHint" timestamp="1594117464205">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
