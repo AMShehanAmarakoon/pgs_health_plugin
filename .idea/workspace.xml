@@ -4,8 +4,11 @@
     <list default="true" id="ba4e2dc3-12d7-4de0-8966-099729bfb2d7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/Extentions.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/Extentions.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftPgsHealthPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftPgsHealthPlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pgs_health_plugin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pgs_health_plugin.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pgs_health_plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/pgs_health_plugin.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,45 +57,53 @@
       <option name="project" value="LOCAL" />
       <updated>1594121187925</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Initial commit 3">
+      <created>1594122006845</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1594122006845</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit 2" />
+    <MESSAGE value="Initial commit 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial commit 3" />
   </component>
   <component name="WindowStateProjectService">
     <state x="366" y="121" key="#Notifications" timestamp="1594121179721">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
     <state x="366" y="121" key="#Notifications/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594121179721" />
-    <state x="326" y="69" key="CommitChangelistDialog2" timestamp="1594121187809">
+    <state x="326" y="69" key="CommitChangelistDialog2" timestamp="1594122006605">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
-    <state x="326" y="69" key="CommitChangelistDialog2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594121187809" />
-    <state width="583" height="582" key="DebuggerActiveHint" timestamp="1594117464205">
+    <state x="326" y="69" key="CommitChangelistDialog2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594122006605" />
+    <state width="583" height="582" key="DebuggerActiveHint" timestamp="1594179336945">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
-    <state width="583" height="582" key="DebuggerActiveHint/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594117464205" />
-    <state width="1574" height="330" key="GridCell.Tab.0.bottom" timestamp="1594117697288">
+    <state width="583" height="582" key="DebuggerActiveHint/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594179336945" />
+    <state width="1574" height="234" key="GridCell.Tab.0.bottom" timestamp="1594179971525">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
-    <state width="1574" height="330" key="GridCell.Tab.0.bottom/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594117697288" />
-    <state width="1574" height="330" key="GridCell.Tab.0.center" timestamp="1594117697287">
+    <state width="1574" height="234" key="GridCell.Tab.0.bottom/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594179971525" />
+    <state width="1574" height="234" key="GridCell.Tab.0.center" timestamp="1594179971524">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
-    <state width="1574" height="330" key="GridCell.Tab.0.center/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594117697287" />
-    <state width="1574" height="330" key="GridCell.Tab.0.left" timestamp="1594117697286">
+    <state width="1574" height="234" key="GridCell.Tab.0.center/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594179971524" />
+    <state width="1574" height="234" key="GridCell.Tab.0.left" timestamp="1594179971523">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
-    <state width="1574" height="330" key="GridCell.Tab.0.left/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594117697286" />
-    <state width="1574" height="330" key="GridCell.Tab.0.right" timestamp="1594117697287">
+    <state width="1574" height="234" key="GridCell.Tab.0.left/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594179971523" />
+    <state width="1574" height="234" key="GridCell.Tab.0.right" timestamp="1594179971524">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
-    <state width="1574" height="330" key="GridCell.Tab.0.right/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594117697287" />
-    <state x="366" y="213" key="Vcs.Push.Dialog.v2" timestamp="1594121190773">
+    <state width="1574" height="234" key="GridCell.Tab.0.right/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594179971524" />
+    <state x="366" y="213" key="Vcs.Push.Dialog.v2" timestamp="1594122009782">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
-    <state x="366" y="213" key="Vcs.Push.Dialog.v2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594121190773" />
+    <state x="366" y="213" key="Vcs.Push.Dialog.v2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594122009782" />
   </component>
 </project>
