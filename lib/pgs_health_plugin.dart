@@ -72,10 +72,16 @@ class PgsHealthPlugin {
         return "exercise_time";
       case DataType.BLOOD_SUGAR:
         return "blood_sugar";
-      case DataType.BLOOD_SUGAR:
-        return "blood_sugar";
+      case DataType.BLOOD_PRESSURE_SYSTOLIC:
+        return "blood_pressure_systolic";
+      case DataType.BLOOD_PRESSURE_DIASTOLIC:
+        return "blood_pressure_diastolic";
       case DataType.MINDFULNESS:
         return "mindfulness";
+      case DataType.BLOOD_OXYGEN:
+        return "blood_oxygen";
+      case DataType.ACTIVE_ENERGY_BURNED:
+        return "active_energy_burned";
     }
     throw Exception('dataType $type not supported');
   }
@@ -83,6 +89,8 @@ class PgsHealthPlugin {
 
 enum DataType {
   BLOOD_SUGAR,
+  BLOOD_PRESSURE_SYSTOLIC,
+  BLOOD_PRESSURE_DIASTOLIC,
   HEART_RATE,
   STEP_COUNT,
   HEIGHT,
@@ -93,7 +101,9 @@ enum DataType {
   SLEEP,
   //STAND_TIME,
   EXERCISE_TIME,
-  MINDFULNESS
+  MINDFULNESS,
+  BLOOD_OXYGEN,
+  ACTIVE_ENERGY_BURNED
 }
 
 class UnsupportedException implements Exception {
@@ -110,6 +120,7 @@ class HealthData {
   final DateTime dateTo;
   final String source;
   final bool userEntered;
+  final String type;
 
   HealthData(
     this.value,
@@ -117,6 +128,7 @@ class HealthData {
     this.dateTo,
     this.source,
     this.userEntered,
+    this.type,
   );
 
   HealthData.fromJson(Map<dynamic, dynamic> json)
@@ -124,9 +136,10 @@ class HealthData {
         dateFrom = DateTime.fromMillisecondsSinceEpoch(json['date_from']),
         dateTo = DateTime.fromMillisecondsSinceEpoch(json['date_to']),
         source = json['source'],
-        userEntered = json['user_entered'];
+        userEntered = json['user_entered'],
+        type = json['type'];
 
   @override
   String toString() =>
-      'FitData(value: $value, dateFrom: $dateFrom, dateTo: $dateTo, source: $source, userEntered: $userEntered)';
+      'FitData(value: $value, dateFrom: $dateFrom, dateTo: $dateTo, source: $source, userEntered: $userEntered, type: $type)';
 }

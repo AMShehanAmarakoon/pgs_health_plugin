@@ -21,6 +21,35 @@ extension HKSampleType {
                     HKSampleType.quantityType(forIdentifier: .heartRate),
                     HKUnit.init(from: "count/min")
             )
+        case "blood_pressure_systolic":
+            return (
+                    HKSampleType.quantityType(forIdentifier: .bloodPressureSystolic),
+                    HKUnit.millimeterOfMercury()
+            )
+        case "blood_pressure_diastolic":
+            return (
+                    HKSampleType.quantityType(forIdentifier: .bloodPressureDiastolic),
+                    HKUnit.millimeterOfMercury()
+            )
+        case "blood_oxygen":
+            return (
+                    HKSampleType.quantityType(forIdentifier: .oxygenSaturation),
+                    HKUnit.percent()
+            )
+        case "water":
+            if #available(iOS 9, *) {
+                return (
+                    HKSampleType.quantityType(forIdentifier: .dietaryWater),
+                    HKUnit.liter()
+                )
+            } else {
+                return nil
+            }
+        case "active_energy_burned":
+            return (
+                    HKSampleType.quantityType(forIdentifier: .activeEnergyBurned),
+                    HKUnit.kilocalorie()
+            )
         case "step_count":
             return (
                     HKSampleType.quantityType(forIdentifier: .stepCount),
@@ -64,15 +93,7 @@ extension HKSampleType {
                     HKSampleType.quantityType(forIdentifier: .activeEnergyBurned),
                     HKUnit.kilocalorie()
             )
-        case "water":
-            if #available(iOS 9, *) {
-                return (
-                        HKSampleType.quantityType(forIdentifier: .dietaryWater),
-                        HKUnit.liter()
-                )
-            } else {
-                return nil
-            }
+        
         case "sleep":
             return (
                     HKSampleType.categoryType(forIdentifier: .sleepAnalysis),

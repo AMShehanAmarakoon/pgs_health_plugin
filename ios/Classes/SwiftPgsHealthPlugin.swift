@@ -87,7 +87,8 @@ public class SwiftPgsHealthPlugin: NSObject, FlutterPlugin {
                     "date_from": Int(sample.startDate.timeIntervalSince1970 * 1000),
                     "date_to": Int(sample.endDate.timeIntervalSince1970 * 1000),
                     "source": self.readSource(sample: sample),
-                    "user_entered": sample.metadata?[HKMetadataKeyWasUserEntered] as? Bool == true
+                    "user_entered": sample.metadata?[HKMetadataKeyWasUserEntered] as? Bool == true,
+                    "type": request.type
                 ]
             })
         }
