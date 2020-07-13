@@ -23,7 +23,7 @@ public class SwiftPgsHealthPlugin: NSObject, FlutterPlugin {
     if (healthStore == nil) {
         healthStore = HKHealthStore();
     }
-    
+   
     do {
         if (call.method == "hasPermissions") {
             let request = try PermissionsRequest.fromCall(call: call)
@@ -36,7 +36,10 @@ public class SwiftPgsHealthPlugin: NSObject, FlutterPlugin {
         } else if (call.method == "read") {
             let request = try ReadRequest.fromCall(call: call)
             read(request: request, result: result)
-        } else {
+        } else if (call.method == "readStats") {
+            let request = try ReadStatsRequest.fromCall(call: call)
+            readStats(request: request, result: result)
+        }else {
             result(FlutterMethodNotImplemented)
         }
     } catch let error as UnsupportedError {
@@ -49,8 +52,62 @@ public class SwiftPgsHealthPlugin: NSObject, FlutterPlugin {
     private func revokePermissions(result: @escaping FlutterResult) {
         result(nil)
     }
+    
+    private func readStats(request: ReadStatsRequest, result: @escaping FlutterResult){
+        print("readStats: \(request.quantityTypeIdentifier)")
+        
+        let type = HKSampleType.quantityType(forIdentifier: request.quantityTypeIdentifier)
+        
+        let calendar = NSCalendar.current
+        let interval = NSDateComponents()
+        interval.day = request.interval
+        
+        var anchorComponents = calendar.dateComponents([.day , .month , .year], from: NSDate() as Date)
+        anchorComponents.hour = 0
+        let anchorDate = calendar.date(from: anchorComponents)
+
+        let query = HKStatisticsCollectionQuery(quantityType: type!, quantitySamplePredicate: nil, options: .cumulativeSum, anchorDate: anchorDate!, intervalComponents: interval as DateComponents)
+        
+        query.initialResultsHandler = {query, res, error in
+            
+            guard res != nil else {
+                result(FlutterError(code: self.TAG, message: "Results are null", details: error.debugDescription))
+                return
+            }
+            
+            
+            let endDate = request.dateTo //Date()
+            let startDate = request.dateFrom// calendar.date(byAdding: .day, value: 0, to: endDate)
+            if let myResults = res{
+                var mapArray = [Dictionary<String,Any>]()
+                
+                
+                myResults.enumerateStatistics(from: startDate, to: endDate) { statistics, stop in
+                    if let quantity = statistics.sumQuantity(){
+                        let date = statistics.startDate
+                        let steps = quantity.doubleValue(for: HKUnit.count())
+                        print("\(date): steps = \(steps)")
+                        //completion(steps)
+                        mapArray.append([
+                            "value" : steps,
+                            "date_from": Int(statistics.startDate.timeIntervalSince1970 * 1000),
+                            "date_to": Int(statistics.endDate.timeIntervalSince1970 * 1000),
+                            "type": request.quantityTypeIdentifier
+                        ])
+                        
+                    }
+                }
+                
+                result(mapArray)
+            }
+        }
+        
+        healthStore!.execute(query)
+       
+    }
 
     private func read(request: ReadRequest, result: @escaping FlutterResult) {
+ 
         requestAuthorization(sampleTypes: [request.sampleType]) { success, error in
             guard success else {
                 result(error)
@@ -160,6 +217,100 @@ public class SwiftPgsHealthPlugin: NSObject, FlutterPlugin {
             completion(true, nil)
         }
     }
+    
+
+    private func readSampleStatistic(request:ReadRequest, completion: @escaping(_ stepRetrieved: Double) -> Void) {
+
+        let type = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount) // The type of data we are requesting
+
+        let calendar = NSCalendar.current
+        let interval = NSDateComponents()
+        interval.day = 1
+
+        var anchorComponents = calendar.dateComponents([.day , .month , .year], from: NSDate() as Date)
+        anchorComponents.hour = 0
+        let anchorDate = calendar.date(from: anchorComponents)
+
+        let stepsQuery = HKStatisticsCollectionQuery(quantityType: type!, quantitySamplePredicate: nil, options: .cumulativeSum, anchorDate: anchorDate!, intervalComponents: interval as DateComponents)
+
+        stepsQuery.initialResultsHandler = {query, results, error in
+            let endDate = Date()
+            let startDate = calendar.date(byAdding: .day, value: 0, to: endDate)
+            if let myResults = results{
+                
+                myResults.enumerateStatistics(from: startDate!, to: endDate) { statistics, stop in
+                    
+                    if let quantity = statistics.sumQuantity(){
+                        let date = statistics.startDate
+                        let steps = quantity.doubleValue(for: HKUnit.count())
+                        print("\(date): steps = \(steps)")
+                        completion(steps)
+                    }
+                }
+            }
+        }
+        
+        healthStore!.execute(stepsQuery)
+    }
 }
 
 
+
+    
+    
+//    let calendar = NSCalendar.current
+//    let endDate = Date()
+//
+//    guard let startDate = calendar.date(byAdding: .day, value: -7, to: endDate) else {
+//        fatalError("*** Unable to create the start date ***")
+//    }
+//
+//    let units: Set<Calendar.Component> = [.day, .month, .year, .era]
+//
+//    var startDateComponents = calendar.dateComponents(units, from: startDate)
+//    startDateComponents.calendar = calendar
+//
+//    var endDateComponents = calendar.dateComponents(units, from: endDate)
+//    endDateComponents.calendar = calendar
+//
+//    // Create the predicate for the query
+//    if #available(iOS 9.3, *) {
+//        let summariesWithinRange = HKQuery.predicate(forActivitySummariesBetweenStart: startDateComponents,
+//                                                     end: endDateComponents)
+//
+//        if #available(iOS 9.3, *) {
+//            let query = HKActivitySummaryQuery(predicate: summariesWithinRange) { (query, summariesOrNil, errorOrNil) -> Void in
+//
+//                guard let summaries = summariesOrNil else {
+//                    // Handle any errors here.
+//                    return
+//                }
+//
+//                for summary in summaries {
+//                    // Process each summary here.
+//                    print(summary)
+//                }
+//
+//                // The results come back on an anonymous background queue.
+//                // Dispatch to the main queue before modifying the UI.
+//
+//                DispatchQueue.main.async {
+//                    // Update the UI here.
+//                }
+//            }
+//
+//             healthStore!.execute(query)
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//
+//    } else {
+//        // Fallback on earlier versions
+//    }
+//
+    // 410 ,  2748,  3014
+    
+    
+   
+    
+    /////////////////////////////////////////

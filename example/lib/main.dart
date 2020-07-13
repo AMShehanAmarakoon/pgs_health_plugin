@@ -42,6 +42,13 @@ class _MyAppState extends State<MyApp> {
   List<HealthData> _stepsData;
   String steps = '0';
 
+  String stepsToday = '0';
+  String stepsLastWeek = '0';
+  String stepsLastMonth = '0';
+  List<HealthData> resultStepToday;
+  List<HealthData> resultStepLastWeek;
+  List<HealthData> resultStepLastMonth;
+
   @override
   void initState() {
     super.initState();
@@ -112,8 +119,26 @@ class _MyAppState extends State<MyApp> {
         dateFrom: DateTime.now().subtract(Duration(days: 1)),
         dateTo: DateTime.now(),
       );
+      final todayDate = DateTime.now();
 
-      _stepsData = results;
+      // Today Steps
+      resultStepToday = await PgsHealthPlugin.readStats(DataType.STEP_COUNT,
+          dateFrom: todayDate, dateTo: todayDate, interval: 1);
+
+      // Today Last Week
+      print(todayDate.weekday);
+      resultStepLastWeek = await PgsHealthPlugin.readStats(DataType.STEP_COUNT,
+          dateFrom: todayDate.subtract(Duration(days: todayDate.weekday)),
+          dateTo: todayDate,
+          interval: 1);
+
+      // Today Last Month
+      resultStepLastMonth = await PgsHealthPlugin.readStats(DataType.STEP_COUNT,
+          dateFrom: DateTime(todayDate.year, todayDate.month, 1),
+          dateTo: todayDate,
+          interval: 1);
+
+      //_stepsData = results;
     } on PlatformException {
       permission = false;
     }
@@ -187,6 +212,34 @@ class _MyAppState extends State<MyApp> {
 
         steps = todaySteps.toString();
       }
+
+      // Steps Today
+      if (resultStepToday != null) {
+        stepsToday = resultStepToday[0].value.toString();
+      }
+
+      // Steps Last Week
+      if (resultStepLastWeek != null) {
+        int totalSteps = 0;
+        int count = 0;
+
+        resultStepLastWeek.forEach((f) {
+          totalSteps += f.value.toInt();
+          count++;
+        });
+        stepsLastWeek = (totalSteps / count).toString();
+      }
+
+      // Steps Last Month
+      if (resultStepLastMonth != null) {
+        int totalSteps = 0;
+        int count = 0;
+        resultStepLastMonth.forEach((f) {
+          totalSteps += f.value.toInt();
+          count++;
+        });
+        stepsLastMonth = (totalSteps / count).toString();
+      }
     });
   }
 
@@ -212,6 +265,16 @@ class _MyAppState extends State<MyApp> {
               Text('Mindfulness : $mindfulness'),
               Text('Steps : $steps'),
               Text('Calories : $calories'),
+              Card(
+                child: Column(
+                  children: <Widget>[
+                    Text("Steps"),
+                    Text("Today : $stepsToday"),
+                    Text("Last Week : $stepsLastWeek"),
+                    Text("Last Month : $stepsLastMonth")
+                  ],
+                ),
+              )
             ],
           ),
         ),
