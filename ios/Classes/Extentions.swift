@@ -12,6 +12,17 @@ extension String: LocalizedError {
         return self
     }
 }
+extension HKQuantityTypeIdentifier {
+    public static func fromDartType(type:String) ->  HKQuantityTypeIdentifier?{
+        switch type {
+        case "step_count":
+            return HKQuantityTypeIdentifier.stepCount
+        default:
+            return nil
+        }
+        
+    }
+}
 
 extension HKSampleType {
     public static func fromDartType(type: String) -> (sampleType: HKSampleType?, unit: HKUnit)? {
