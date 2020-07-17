@@ -39,6 +39,9 @@ public class SwiftPgsHealthPlugin: NSObject, FlutterPlugin {
         } else if (call.method == "readStats") {
             let request = try ReadStatsRequest.fromCall(call: call)
             readStats(request: request, result: result)
+        }else if (call.method == "readCategory") {
+            let request = try ReadCategoryRequest.fromCall(call: call)
+            readCategory(request: request, result: result)
         }else {
             result(FlutterMethodNotImplemented)
         }
@@ -51,6 +54,43 @@ public class SwiftPgsHealthPlugin: NSObject, FlutterPlugin {
     
     private func revokePermissions(result: @escaping FlutterResult) {
         result(nil)
+    }
+    
+    private func readCategory(request: ReadCategoryRequest, result: @escaping FlutterResult){
+        print("readCategory: \(request.categoryTypeIdentifier)")
+        
+        guard let type = HKObjectType.categoryType(forIdentifier: request.categoryTypeIdentifier) else{
+            return
+        }
+        
+        let predicate = HKQuery.predicateForSamples(withStart: request.dateFrom, end: request.dateTo, options: .strictStartDate)
+        
+        // Sort if needed
+        //let sortDescriptor = NSSortDescriptor(key:HKSampleSortIdentifierEndDate,ascending: false)
+        
+        let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: 0, sortDescriptors: nil) { (query, res, error) in
+            
+            guard let samples = res else {
+                result(FlutterError(code: self.TAG, message: "Results are null", details: error.debugDescription))
+                return
+            }
+            
+            result(samples.map { sample -> NSDictionary in
+                [
+                    "value": self.readValue(sample: sample, unit: request.unit),
+                    "date_from": Int(sample.startDate.timeIntervalSince1970 * 1000),
+                    "date_to": Int(sample.endDate.timeIntervalSince1970 * 1000),
+                    "source": self.readSource(sample: sample),
+                    "user_entered": sample.metadata?[HKMetadataKeyWasUserEntered] as? Bool == true,
+                    "type": request.categoryTypeIdentifier
+                ]
+            })
+            
+        }
+        
+        healthStore!.execute(query)
+        
+        
     }
     
     private func readStats(request: ReadStatsRequest, result: @escaping FlutterResult){
@@ -85,11 +125,11 @@ public class SwiftPgsHealthPlugin: NSObject, FlutterPlugin {
                 myResults.enumerateStatistics(from: startDate, to: endDate) { statistics, stop in
                     if let quantity = statistics.sumQuantity(){
                         let date = statistics.startDate
-                        let steps = quantity.doubleValue(for: HKUnit.count())
-                        print("\(date): steps = \(steps)")
-                        //completion(steps)
+                        let value = quantity.doubleValue(for: request.unit)
+                        //print("\(date): steps = \(value)")
+            
                         mapArray.append([
-                            "value" : steps,
+                            "value" : value,
                             "date_from": Int(statistics.startDate.timeIntervalSince1970 * 1000),
                             "date_to": Int(statistics.endDate.timeIntervalSince1970 * 1000),
                             "type": request.quantityTypeIdentifier
@@ -137,7 +177,7 @@ public class SwiftPgsHealthPlugin: NSObject, FlutterPlugin {
                 samples = samples.sorted(by: { $0.startDate.compare($1.startDate) == .orderedAscending })
             }
 
-            print(samples)
+            //print(samples)
             result(samples.map { sample -> NSDictionary in
                 [
                     "value": self.readValue(sample: sample, unit: request.unit),
@@ -221,7 +261,7 @@ public class SwiftPgsHealthPlugin: NSObject, FlutterPlugin {
 
     private func readSampleStatistic(request:ReadRequest, completion: @escaping(_ stepRetrieved: Double) -> Void) {
 
-        let type = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount) // The type of data we are requesting
+        let type = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)
 
         let calendar = NSCalendar.current
         let interval = NSDateComponents()

@@ -2,21 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ba4e2dc3-12d7-4de0-8966-099729bfb2d7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/ios/Classes/ReadStatsRequest.swift" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ios/Classes/ReadStatsRequest.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/ios/Classes/ReadCategoryRequest.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Classes/ReadCategoryRequest.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/CHANGELOG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/example/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/ios/Classes/Extentions.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/ios/Classes/Extentions.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/ios/Classes/ReadStatsRequest.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/ios/Classes/ReadStatsRequest.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/ios/Classes/SwiftPgsHealthPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/ios/Classes/SwiftPgsHealthPlugin.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/lib/pgs_health_plugin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/lib/pgs_health_plugin.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/pgs_health_plugin/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/Extentions.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/Extentions.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/ReadStatsRequest.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/ReadStatsRequest.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftPgsHealthPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftPgsHealthPlugin.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/pgs_health_plugin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pgs_health_plugin.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
@@ -82,47 +87,62 @@
       <option name="project" value="LOCAL" />
       <updated>1594180055017</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Steps Stats">
+      <created>1594637957485</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1594637957485</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit 2" />
     <MESSAGE value="Initial commit 3" />
     <MESSAGE value="Added health types" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added health types" />
+    <MESSAGE value="Steps Stats" />
+    <option name="LAST_COMMIT_MESSAGE" value="Steps Stats" />
   </component>
   <component name="WindowStateProjectService">
     <state x="366" y="121" key="#Notifications" timestamp="1594121179721">
       <screen x="52" y="23" width="1628" height="1027" />
     </state>
     <state x="366" y="121" key="#Notifications/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594121179721" />
-    <state x="326" y="69" key="CommitChangelistDialog2" timestamp="1594180054555">
-      <screen x="52" y="23" width="1628" height="1027" />
+    <state x="2003" y="70" key="CommitChangelistDialog2" timestamp="1594637956942">
+      <screen x="1680" y="23" width="1920" height="1057" />
     </state>
+    <state x="2003" y="70" key="CommitChangelistDialog2/1680.23.1920.1057/52.23.1628.1027@1680.23.1920.1057" timestamp="1594637956942" />
     <state x="326" y="69" key="CommitChangelistDialog2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594180054555" />
-    <state width="628" height="582" key="DebuggerActiveHint" timestamp="1594615674668">
-      <screen x="52" y="23" width="1628" height="1027" />
+    <state width="741" height="600" key="DebuggerActiveHint" timestamp="1594958667362">
+      <screen x="1680" y="23" width="1920" height="1057" />
     </state>
-    <state width="628" height="582" key="DebuggerActiveHint/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594615674668" />
-    <state width="1574" height="208" key="GridCell.Tab.0.bottom" timestamp="1594615726599">
-      <screen x="52" y="23" width="1628" height="1027" />
+    <state width="741" height="600" key="DebuggerActiveHint/1680.23.1920.1057/52.23.1628.1027@1680.23.1920.1057" timestamp="1594958667362" />
+    <state width="628" height="582" key="DebuggerActiveHint/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594872458701" />
+    <state width="1866" height="219" key="GridCell.Tab.0.bottom" timestamp="1594958725795">
+      <screen x="1680" y="23" width="1920" height="1057" />
     </state>
-    <state width="1574" height="208" key="GridCell.Tab.0.bottom/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594615726599" />
-    <state width="1574" height="208" key="GridCell.Tab.0.center" timestamp="1594615726598">
-      <screen x="52" y="23" width="1628" height="1027" />
+    <state width="1866" height="219" key="GridCell.Tab.0.bottom/1680.23.1920.1057/52.23.1628.1027@1680.23.1920.1057" timestamp="1594958725795" />
+    <state width="1574" height="186" key="GridCell.Tab.0.bottom/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594875399866" />
+    <state width="1866" height="219" key="GridCell.Tab.0.center" timestamp="1594958725794">
+      <screen x="1680" y="23" width="1920" height="1057" />
     </state>
-    <state width="1574" height="208" key="GridCell.Tab.0.center/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594615726598" />
-    <state width="1574" height="208" key="GridCell.Tab.0.left" timestamp="1594615726597">
-      <screen x="52" y="23" width="1628" height="1027" />
+    <state width="1866" height="219" key="GridCell.Tab.0.center/1680.23.1920.1057/52.23.1628.1027@1680.23.1920.1057" timestamp="1594958725794" />
+    <state width="1574" height="186" key="GridCell.Tab.0.center/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594875399865" />
+    <state width="1866" height="219" key="GridCell.Tab.0.left" timestamp="1594958725794">
+      <screen x="1680" y="23" width="1920" height="1057" />
     </state>
-    <state width="1574" height="208" key="GridCell.Tab.0.left/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594615726597" />
-    <state width="1574" height="208" key="GridCell.Tab.0.right" timestamp="1594615726598">
-      <screen x="52" y="23" width="1628" height="1027" />
+    <state width="1866" height="219" key="GridCell.Tab.0.left/1680.23.1920.1057/52.23.1628.1027@1680.23.1920.1057" timestamp="1594958725794" />
+    <state width="1574" height="186" key="GridCell.Tab.0.left/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594875399865" />
+    <state width="1866" height="219" key="GridCell.Tab.0.right" timestamp="1594958725794">
+      <screen x="1680" y="23" width="1920" height="1057" />
     </state>
-    <state width="1574" height="208" key="GridCell.Tab.0.right/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594615726598" />
-    <state x="366" y="213" key="Vcs.Push.Dialog.v2" timestamp="1594180056797">
-      <screen x="52" y="23" width="1628" height="1027" />
+    <state width="1866" height="219" key="GridCell.Tab.0.right/1680.23.1920.1057/52.23.1628.1027@1680.23.1920.1057" timestamp="1594958725794" />
+    <state width="1574" height="186" key="GridCell.Tab.0.right/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594875399866" />
+    <state x="2050" y="219" key="Vcs.Push.Dialog.v2" timestamp="1594637959002">
+      <screen x="1680" y="23" width="1920" height="1057" />
     </state>
+    <state x="2050" y="219" key="Vcs.Push.Dialog.v2/1680.23.1920.1057/52.23.1628.1027@1680.23.1920.1057" timestamp="1594637959002" />
     <state x="366" y="213" key="Vcs.Push.Dialog.v2/1680.23.1920.1057/52.23.1628.1027@52.23.1628.1027" timestamp="1594180056797" />
   </component>
 </project>

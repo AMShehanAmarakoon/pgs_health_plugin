@@ -12,11 +12,34 @@ extension String: LocalizedError {
         return self
     }
 }
+extension HKCategoryTypeIdentifier {
+    public static func fromDartType(type:String) ->  (sampleType:HKCategoryTypeIdentifier?,unit:HKUnit)?{
+        switch type {
+        case "sleep":
+            return (HKCategoryTypeIdentifier.sleepAnalysis, HKUnit.minute())
+        case "mindfulness":
+            if #available(iOS 10.0, *) {
+                return (HKCategoryTypeIdentifier.mindfulSession, HKUnit.minute())
+            } else {
+                return nil
+            }
+        default:
+            return nil
+        }
+        
+    }
+}
 extension HKQuantityTypeIdentifier {
-    public static func fromDartType(type:String) ->  HKQuantityTypeIdentifier?{
+    public static func fromDartType(type:String) ->  (sampleType:HKQuantityTypeIdentifier?,unit:HKUnit)?{
         switch type {
         case "step_count":
-            return HKQuantityTypeIdentifier.stepCount
+            return (HKQuantityTypeIdentifier.stepCount, HKUnit.count())
+        case "water":
+            if #available(iOS 9.0, *) {
+                return (HKQuantityTypeIdentifier.dietaryWater, HKUnit.fluidOunceUS())
+            } else {
+                return nil
+            }
         default:
             return nil
         }
@@ -51,7 +74,7 @@ extension HKSampleType {
             if #available(iOS 9, *) {
                 return (
                     HKSampleType.quantityType(forIdentifier: .dietaryWater),
-                    HKUnit.liter()
+                    HKUnit.fluidOunceUS()
                 )
             } else {
                 return nil

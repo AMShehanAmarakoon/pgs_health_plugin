@@ -69,6 +69,32 @@ class PgsHealthPlugin {
         );
   }
 
+  static Future<List<HealthData>> readCategory(
+    DataType type, {
+    DateTime dateFrom,
+    DateTime dateTo,
+    int interval,
+  }) async {
+    return await _channel
+        .invokeListMethod('readCategory', {
+          "categoryTypeIdentifier": _dataTypeToString(type),
+          "date_from": dateFrom?.millisecondsSinceEpoch ?? 1,
+          "date_to": (dateTo ?? DateTime.now()).millisecondsSinceEpoch,
+          "interval": interval,
+        })
+        .then(
+          (response) =>
+              response.map((item) => HealthData.fromJson(item)).toList(),
+        )
+        .catchError(
+          (_) => throw UnsupportedException(type),
+          test: (e) {
+            if (e is PlatformException) return e.code == 'unsupported';
+            return false;
+          },
+        );
+  }
+
   static getAvailableSources() async {
     final results = await PgsHealthPlugin.read(
       DataType.STEP_COUNT,

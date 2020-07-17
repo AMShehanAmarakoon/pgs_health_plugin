@@ -1,8 +1,10 @@
+import 'dart:ffi';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:pgs_health_plugin/pgs_health_plugin.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +14,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final todayDate = DateTime.now();
+
   HealthData _hearRateData;
   String heartRate = '0';
 
@@ -33,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   HealthData _sleepData;
   String sleep = '0';
 
-  HealthData _mindfulnessData;
+  List<HealthData> _mindfulnessData;
   String mindfulness = '0';
 
   HealthData _caloriesData;
@@ -49,6 +53,33 @@ class _MyAppState extends State<MyApp> {
   List<HealthData> resultStepLastWeek;
   List<HealthData> resultStepLastMonth;
 
+  String waterToday = '0';
+  String waterYesterday = '0';
+  String waterLastWeek = '0';
+  List<HealthData> resultWaterToday;
+  List<HealthData> resultWaterTodayAll;
+  List<HealthData> resultWaterYesterday;
+  List<HealthData> resultWaterLastWeek;
+
+  String sleepLastNight = '';
+  String sleepTimeLastNight = '';
+  String sleepThisWeek = '';
+  String sleepLastWeek = '';
+  String sleepLastMonth = '';
+  List<HealthData> resultSleepLastNight = [];
+  List<HealthData> resultSleepThisWeek = [];
+  List<HealthData> resultSleepLastWeek = [];
+  List<HealthData> resultSleepLastMonth = [];
+
+  String mindfulnessToday = '';
+  String mindfulnessThisWeek = '';
+  String mindfulnessLastWeek = '';
+  String mindfulnessLastMonth = '';
+  List<HealthData> resultMindfulnessToday = [];
+  List<HealthData> resultMindfulnessThisWeek = [];
+  List<HealthData> resultMindfulnessLastWeek = [];
+  List<HealthData> resultMindfulnessLastMonth = [];
+
   @override
   void initState() {
     super.initState();
@@ -62,83 +93,32 @@ class _MyAppState extends State<MyApp> {
     try {
       permission = await PgsHealthPlugin.requestPermissions(DataType.values);
 
-      final resultHeartRate =
-          await PgsHealthPlugin.readLast(DataType.HEART_RATE);
-      if (resultHeartRate != null) {
-        _hearRateData = resultHeartRate;
-      }
+      // Heart Rate
+      await _heartRate();
 
-      final resultBloodPressureSystolic =
-          await PgsHealthPlugin.readLast(DataType.BLOOD_PRESSURE_SYSTOLIC);
-      if (resultBloodPressureSystolic != null) {
-        _bloodPressureSystolicData = resultBloodPressureSystolic;
-      }
+      // Blood Pressure
+      await _bloodPressure();
 
-      final resultBloodPressureDiastolic =
-          await PgsHealthPlugin.readLast(DataType.BLOOD_PRESSURE_DIASTOLIC);
-      if (resultBloodPressureDiastolic != null) {
-        _bloodPressureDiastolicData = resultBloodPressureDiastolic;
-      }
+      // Pulse Oximeter
+      await _pulseOximeter();
 
-      final resultPulseOximeter =
-          await PgsHealthPlugin.readLast(DataType.BLOOD_OXYGEN);
-      if (resultPulseOximeter != null) {
-        _pulseOximeterData = resultPulseOximeter;
-      }
+      // Blood Sugar
+      await _bloodSugar();
 
-      final resultBloodSugar =
-          await PgsHealthPlugin.readLast(DataType.BLOOD_SUGAR);
-      if (resultBloodSugar != null) {
-        _bloodSugarData = resultBloodSugar;
-      }
+      // Sleep
+      await _sleep();
 
-      final resultWater = await PgsHealthPlugin.readLast(DataType.WATER);
-      if (resultWater != null) {
-        _waterData = resultWater;
-      }
+      // Mindfulness
+      await _mindfulness();
 
-      final resultSleep = await PgsHealthPlugin.readLast(DataType.SLEEP);
-      if (resultSleep != null) {
-        _sleepData = resultSleep;
-      }
+      // Calories
+      await _calories();
 
-      final resultMindfulness =
-          await PgsHealthPlugin.readLast(DataType.MINDFULNESS);
-      if (resultMindfulness != null) {
-        _mindfulnessData = resultMindfulness;
-      }
+      // Steps
+      await _stepCount();
 
-      final resultCalories =
-          await PgsHealthPlugin.readLast(DataType.ACTIVE_ENERGY_BURNED);
-      if (resultCalories != null) {
-        _caloriesData = resultCalories;
-      }
-
-      final results = await PgsHealthPlugin.read(
-        DataType.STEP_COUNT,
-        dateFrom: DateTime.now().subtract(Duration(days: 1)),
-        dateTo: DateTime.now(),
-      );
-      final todayDate = DateTime.now();
-
-      // Today Steps
-      resultStepToday = await PgsHealthPlugin.readStats(DataType.STEP_COUNT,
-          dateFrom: todayDate, dateTo: todayDate, interval: 1);
-
-      // Today Last Week
-      print(todayDate.weekday);
-      resultStepLastWeek = await PgsHealthPlugin.readStats(DataType.STEP_COUNT,
-          dateFrom: todayDate.subtract(Duration(days: todayDate.weekday)),
-          dateTo: todayDate,
-          interval: 1);
-
-      // Today Last Month
-      resultStepLastMonth = await PgsHealthPlugin.readStats(DataType.STEP_COUNT,
-          dateFrom: DateTime(todayDate.year, todayDate.month, 1),
-          dateTo: todayDate,
-          interval: 1);
-
-      //_stepsData = results;
+      // Water
+      await _water();
     } on PlatformException {
       permission = false;
     }
@@ -191,8 +171,8 @@ class _MyAppState extends State<MyApp> {
 
       // Mindfulness
       if (_mindfulnessData != null) {
-        Duration mindfulnessDuration =
-            _mindfulnessData.dateTo.difference(_mindfulnessData.dateFrom);
+        Duration mindfulnessDuration = _mindfulnessData.last.dateTo
+            .difference(_mindfulnessData.last.dateFrom);
 
         mindfulness = mindfulnessDuration.toString().split('.')[0];
       }
@@ -214,12 +194,12 @@ class _MyAppState extends State<MyApp> {
       }
 
       // Steps Today
-      if (resultStepToday != null) {
+      if (resultStepToday != null && resultStepToday.length > 0) {
         stepsToday = resultStepToday[0].value.toString();
       }
 
       // Steps Last Week
-      if (resultStepLastWeek != null) {
+      if (resultStepLastWeek != null && resultStepLastWeek.length > 0) {
         int totalSteps = 0;
         int count = 0;
 
@@ -227,11 +207,12 @@ class _MyAppState extends State<MyApp> {
           totalSteps += f.value.toInt();
           count++;
         });
-        stepsLastWeek = (totalSteps / count).toString();
+        double avg = (totalSteps / count);
+        stepsLastWeek = avg.round().toString();
       }
 
       // Steps Last Month
-      if (resultStepLastMonth != null) {
+      if (resultStepLastMonth != null && resultStepLastMonth.length > 0) {
         int totalSteps = 0;
         int count = 0;
         resultStepLastMonth.forEach((f) {
@@ -240,7 +221,362 @@ class _MyAppState extends State<MyApp> {
         });
         stepsLastMonth = (totalSteps / count).toString();
       }
+
+      // Water Today
+      if (resultWaterToday != null && resultWaterToday.length > 0) {
+        int decimals = 1;
+        int fac = pow(10, decimals);
+        double d = resultWaterToday[0].value;
+        d = (d * fac).round() / fac;
+
+        waterToday = d.toString();
+      }
+
+      // Water Yesterday
+      if (resultWaterYesterday != null && resultWaterYesterday.length > 0) {
+        int decimals = 1;
+        int fac = pow(10, decimals);
+        double d = resultWaterYesterday[0].value;
+        d = (d * fac).round() / fac;
+
+        waterYesterday = d.toString();
+      }
+
+      // Steps Last Week
+      if (resultWaterLastWeek != null && resultWaterLastWeek.length > 0) {
+        int totalSteps = 0;
+
+        resultWaterLastWeek.forEach((f) {
+          totalSteps += f.value.toInt();
+        });
+
+        waterLastWeek = totalSteps.toString();
+      }
+
+      // Sleep Last Night
+      if (resultSleepLastNight != null && resultSleepLastNight.length > 0) {
+        Duration sleepDuration = resultSleepLastNight.last.dateTo
+            .difference(resultSleepLastNight.last.dateFrom);
+
+        String duration = sleepDuration.toString().split('.')[0];
+        String hours = duration.split(':')[0];
+        String minutes = duration.split(':')[1];
+
+        String toTime = DateFormat('h:mm').format(
+            DateTime.fromMicrosecondsSinceEpoch(
+                _sleepData.dateTo.millisecondsSinceEpoch * 1000));
+        String toTimeAmPm = DateFormat('a').format(
+            DateTime.fromMicrosecondsSinceEpoch(
+                _sleepData.dateTo.millisecondsSinceEpoch * 1000));
+
+        String fromTime = DateFormat('h:mm').format(
+            DateTime.fromMicrosecondsSinceEpoch(
+                _sleepData.dateFrom.millisecondsSinceEpoch * 1000));
+        String fromTimeAmPm = DateFormat('a').format(
+            DateTime.fromMicrosecondsSinceEpoch(
+                _sleepData.dateFrom.millisecondsSinceEpoch * 1000));
+
+        sleepLastNight = '$hours hr. $minutes min.';
+        sleepTimeLastNight = '$fromTime $fromTimeAmPm - $toTime $toTimeAmPm';
+      }
+
+      // Sleep This Week
+      if (resultSleepThisWeek != null && resultSleepThisWeek.length > 0) {
+        int totalSeconds = 0;
+        int count = 0;
+
+        resultSleepThisWeek.forEach((f) {
+          Duration sleepDuration = f.dateTo.difference(f.dateFrom);
+
+          totalSeconds += sleepDuration.inSeconds;
+          count++;
+        });
+
+        double avgInMinutes = (totalSeconds / count);
+
+        String duration =
+            Duration(seconds: avgInMinutes.toInt()).toString().split('.')[0];
+        String hours = duration.split(':')[0];
+        int minutes = int.parse(duration.split(':')[1]);
+        int seconds =
+            int.parse(duration.split(':')[2]); //duration.split(':')[2];
+
+        if (seconds >= 30) {
+          minutes++;
+        }
+
+        sleepThisWeek = '$hours $minutes';
+      }
+
+      // Sleep Last Week
+      if (resultSleepLastWeek != null && resultSleepLastWeek.length > 0) {
+        int totalSeconds = 0;
+        int count = 0;
+
+        resultSleepLastWeek.forEach((f) {
+          Duration sleepDuration = f.dateTo.difference(f.dateFrom);
+
+          totalSeconds += sleepDuration.inSeconds;
+          count++;
+        });
+
+        double avgInMinutes = (totalSeconds / count);
+
+        String duration =
+            Duration(seconds: avgInMinutes.toInt()).toString().split('.')[0];
+        String hours = duration.split(':')[0];
+        int minutes = int.parse(duration.split(':')[1]);
+        int seconds =
+            int.parse(duration.split(':')[2]); //duration.split(':')[2];
+
+        if (seconds >= 30) {
+          minutes++;
+        }
+        sleepLastWeek = '$hours $minutes';
+      }
+
+      // Sleep Last Month
+      if (resultSleepLastMonth != null && resultSleepLastMonth.length > 0) {
+        int totalSeconds = 0;
+        int count = 0;
+
+        resultSleepLastMonth.forEach((f) {
+          Duration sleepDuration = f.dateTo.difference(f.dateFrom);
+
+          totalSeconds += sleepDuration.inSeconds;
+          count++;
+        });
+
+        double avgInMinutes = (totalSeconds / count);
+
+        String duration =
+            Duration(seconds: avgInMinutes.toInt()).toString().split('.')[0];
+        String hours = duration.split(':')[0];
+        int minutes = int.parse(duration.split(':')[1]);
+        int seconds =
+            int.parse(duration.split(':')[2]); //duration.split(':')[2];
+
+        if (seconds >= 30) {
+          minutes++;
+        }
+        sleepLastMonth = '$hours $minutes';
+      }
+
+      // Mindfulness Today
+      if (resultMindfulnessToday != null && resultMindfulnessToday.length > 0) {
+        int totalSeconds = 0;
+
+        resultMindfulnessToday.forEach((f) {
+          Duration duration = f.dateTo.difference(f.dateFrom);
+
+          totalSeconds += duration.inSeconds;
+        });
+
+        mindfulnessToday =
+            Duration(seconds: totalSeconds.toInt()).inMinutes.toString();
+      }
+
+      // Mindfulness This Week
+      if (resultMindfulnessThisWeek != null &&
+          resultMindfulnessThisWeek.length > 0) {
+        int totalSeconds = 0;
+
+        resultMindfulnessThisWeek.forEach((f) {
+          Duration duration = f.dateTo.difference(f.dateFrom);
+
+          totalSeconds += duration.inSeconds;
+        });
+
+        mindfulnessThisWeek =
+            Duration(seconds: totalSeconds.toInt()).inMinutes.toString();
+      }
+
+      // Mindfulness Last Week
+      if (resultMindfulnessLastWeek != null &&
+          resultMindfulnessLastWeek.length > 0) {
+        int totalSeconds = 0;
+
+        resultMindfulnessLastWeek.forEach((f) {
+          Duration duration = f.dateTo.difference(f.dateFrom);
+
+          totalSeconds += duration.inSeconds;
+        });
+
+        mindfulnessLastWeek =
+            Duration(seconds: totalSeconds.toInt()).inMinutes.toString();
+      }
+
+      // Mindfulness Last Month
+      if (resultMindfulnessLastMonth != null &&
+          resultMindfulnessLastMonth.length > 0) {
+        int totalSeconds = 0;
+
+        resultMindfulnessLastMonth.forEach((f) {
+          Duration duration = f.dateTo.difference(f.dateFrom);
+
+          totalSeconds += duration.inSeconds;
+        });
+
+        mindfulnessLastMonth =
+            Duration(seconds: totalSeconds.toInt()).inMinutes.toString();
+      }
     });
+  }
+
+  Future<Void> _calories() async {
+    final resultCalories =
+        await PgsHealthPlugin.readLast(DataType.ACTIVE_ENERGY_BURNED);
+    if (resultCalories != null) {
+      _caloriesData = resultCalories;
+    }
+  }
+
+  Future<Void> _mindfulness() async {
+    final resultMindfulness = await PgsHealthPlugin.read(DataType.MINDFULNESS);
+    if (resultMindfulness != null) {
+      _mindfulnessData = resultMindfulness;
+    }
+
+    // Mindfulness Today
+    resultMindfulnessToday = await PgsHealthPlugin.readCategory(
+        DataType.MINDFULNESS,
+        dateFrom: todayDate.subtract(Duration(days: 1)),
+        dateTo: todayDate,
+        interval: 1);
+
+    // Mindfulness This Week
+    resultMindfulnessThisWeek = await PgsHealthPlugin.readCategory(
+        DataType.MINDFULNESS,
+        dateTo: todayDate,
+        dateFrom: todayDate.subtract(Duration(days: 6)),
+        interval: 1);
+
+    // Mindfulness Last Week
+    resultMindfulnessLastWeek = await PgsHealthPlugin.readCategory(
+        DataType.MINDFULNESS,
+        dateTo: todayDate.subtract(Duration(days: 7)),
+        dateFrom: todayDate.subtract(Duration(days: 14)),
+        interval: 1);
+
+    // Mindfulness Last Month
+    resultMindfulnessLastMonth = await PgsHealthPlugin.readCategory(
+        DataType.MINDFULNESS,
+        dateFrom: DateTime(todayDate.year, todayDate.month, 1),
+        dateTo: todayDate,
+        interval: 1);
+  }
+
+  Future<Void> _sleep() async {
+    final resultSleep = await PgsHealthPlugin.readLast(DataType.SLEEP);
+    if (resultSleep != null) {
+      _sleepData = resultSleep;
+    }
+
+    // Sleep Last Night
+    resultSleepLastNight = await PgsHealthPlugin.readCategory(DataType.SLEEP,
+        dateFrom: todayDate.subtract(Duration(days: 1)),
+        dateTo: todayDate,
+        interval: 1);
+
+    // Sleep This Week
+    resultSleepThisWeek = await PgsHealthPlugin.readCategory(DataType.SLEEP,
+        dateTo: todayDate,
+        dateFrom: todayDate.subtract(Duration(days: 7)),
+        interval: 1);
+
+    resultSleepLastWeek = await PgsHealthPlugin.readCategory(DataType.SLEEP,
+        dateTo: todayDate.subtract(Duration(days: 7)),
+        dateFrom: todayDate.subtract(Duration(days: 14)),
+        interval: 1);
+
+    // Sleep Last Month
+    resultSleepLastMonth = await PgsHealthPlugin.readCategory(DataType.SLEEP,
+        dateFrom: DateTime(todayDate.year, todayDate.month, 1),
+        dateTo: todayDate,
+        interval: 1);
+  }
+
+  Future<Void> _bloodSugar() async {
+    final resultBloodSugar =
+        await PgsHealthPlugin.readLast(DataType.BLOOD_SUGAR);
+    if (resultBloodSugar != null) {
+      _bloodSugarData = resultBloodSugar;
+    }
+  }
+
+  Future<Void> _pulseOximeter() async {
+    final resultPulseOximeter =
+        await PgsHealthPlugin.readLast(DataType.BLOOD_OXYGEN);
+    if (resultPulseOximeter != null) {
+      _pulseOximeterData = resultPulseOximeter;
+    }
+  }
+
+  Future<Void> _bloodPressure() async {
+    final resultBloodPressureSystolic =
+        await PgsHealthPlugin.readLast(DataType.BLOOD_PRESSURE_SYSTOLIC);
+    if (resultBloodPressureSystolic != null) {
+      _bloodPressureSystolicData = resultBloodPressureSystolic;
+    }
+
+    final resultBloodPressureDiastolic =
+        await PgsHealthPlugin.readLast(DataType.BLOOD_PRESSURE_DIASTOLIC);
+    if (resultBloodPressureDiastolic != null) {
+      _bloodPressureDiastolicData = resultBloodPressureDiastolic;
+    }
+  }
+
+  Future<Void> _heartRate() async {
+    final resultHeartRate = await PgsHealthPlugin.readLast(DataType.HEART_RATE);
+    if (resultHeartRate != null) {
+      _hearRateData = resultHeartRate;
+    }
+  }
+
+  Future<Void> _water() async {
+    final resultWater = await PgsHealthPlugin.readLast(DataType.WATER);
+    if (resultWater != null) {
+      _waterData = resultWater;
+    }
+
+    // Water Today All
+    resultWaterTodayAll = await PgsHealthPlugin.read(DataType.WATER,
+        dateFrom: todayDate.subtract(Duration(days: 1)), dateTo: todayDate);
+    print(resultWaterTodayAll.toString());
+
+    // Water Today
+    resultWaterToday = await PgsHealthPlugin.readStats(DataType.WATER,
+        dateFrom: todayDate, dateTo: todayDate, interval: 1);
+
+    // Water Yesterday
+    resultWaterYesterday = await PgsHealthPlugin.readStats(DataType.WATER,
+        dateTo: todayDate.subtract(Duration(days: 1)),
+        dateFrom: todayDate.subtract(Duration(days: 2)),
+        interval: 1);
+
+    // Water Last Week
+    resultWaterLastWeek = await PgsHealthPlugin.readStats(DataType.WATER,
+        dateFrom: todayDate.subtract(Duration(days: 6)),
+        dateTo: todayDate,
+        interval: 1);
+  }
+
+  Future<Void> _stepCount() async {
+    // Steps Today
+    resultStepToday = await PgsHealthPlugin.readStats(DataType.STEP_COUNT,
+        dateFrom: todayDate, dateTo: todayDate, interval: 1);
+
+    // Steps Last Week
+    resultStepLastWeek = await PgsHealthPlugin.readStats(DataType.STEP_COUNT,
+        dateFrom: todayDate.subtract(Duration(days: 6)),
+        dateTo: todayDate,
+        interval: 1);
+
+    // Steps Last Month
+    resultStepLastMonth = await PgsHealthPlugin.readStats(DataType.STEP_COUNT,
+        dateFrom: DateTime(todayDate.year, todayDate.month, 1),
+        dateTo: todayDate,
+        interval: 1);
   }
 
   @override
@@ -268,10 +604,49 @@ class _MyAppState extends State<MyApp> {
               Card(
                 child: Column(
                   children: <Widget>[
-                    Text("Steps"),
+                    Text(
+                      "Steps",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     Text("Today : $stepsToday"),
                     Text("Last Week : $stepsLastWeek"),
                     Text("Last Month : $stepsLastMonth")
+                  ],
+                ),
+              ),
+              Card(
+                child: Column(
+                  children: <Widget>[
+                    Text("Water",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text("Today : $waterToday"),
+                    Text("Yesterday : $waterYesterday"),
+                    Text("Last Week : $waterLastWeek")
+                  ],
+                ),
+              ),
+              Card(
+                child: Column(
+                  children: <Widget>[
+                    Text("Sleep",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text("Last Night Duration: $sleepLastNight"),
+                    Text("Last Night Time : $sleepTimeLastNight"),
+                    Text("This Week : $sleepThisWeek"),
+                    Text("Last Week : $sleepLastWeek"),
+                    Text("Last Month : $sleepLastMonth"),
+                  ],
+                ),
+              ),
+              Card(
+                child: Column(
+                  children: <Widget>[
+                    Text("Mindfulness",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text("Today : $mindfulnessToday"),
+                    Text("This Week : $mindfulnessThisWeek"),
+                    Text("Last Week : $mindfulnessLastWeek"),
+                    Text("Last Month : $mindfulnessLastMonth"),
                   ],
                 ),
               )

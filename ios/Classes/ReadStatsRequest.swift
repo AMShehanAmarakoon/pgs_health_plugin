@@ -9,12 +9,14 @@ import HealthKit
 
 class ReadStatsRequest {
     let quantityTypeIdentifier: HKQuantityTypeIdentifier
+    let unit:HKUnit
     let dateFrom: Date
     let dateTo: Date
     let interval:Int
     
-    private init(quantityTypeIdentifier: HKQuantityTypeIdentifier,  dateFrom: Date, dateTo: Date, interval: Int?) {
+    private init(quantityTypeIdentifier: HKQuantityTypeIdentifier, unit:HKUnit ,dateFrom: Date, dateTo: Date, interval: Int?) {
         self.quantityTypeIdentifier = quantityTypeIdentifier
+        self.unit = unit
         self.dateFrom = dateFrom
         self.dateTo = dateTo
         self.interval = interval ?? 1
@@ -29,8 +31,10 @@ class ReadStatsRequest {
                 throw "invalid call arguments \(call.arguments ?? "nil arguments")";
         }
         
-        guard let quantityType = HKQuantityTypeIdentifier.fromDartType(type: quantityTypeIdentifier)
-            else {
+        
+        guard let values = HKQuantityTypeIdentifier.fromDartType(type: quantityTypeIdentifier),
+              let sampleType = values.sampleType as? HKQuantityTypeIdentifier,
+              let unit = values.unit as? HKUnit else {
             throw UnsupportedError(message: "type \(quantityTypeIdentifier) is not supported");
         }
 
@@ -38,6 +42,6 @@ class ReadStatsRequest {
         let dateFrom = Date(timeIntervalSince1970: dateFromEpoch.doubleValue / 1000)
         let dateTo = Date(timeIntervalSince1970: dateToEpoch.doubleValue / 1000)
 
-        return ReadStatsRequest(quantityTypeIdentifier: quantityType, dateFrom: dateFrom, dateTo: dateTo, interval: interval)
+        return ReadStatsRequest(quantityTypeIdentifier: sampleType,unit: unit, dateFrom: dateFrom, dateTo: dateTo, interval: interval)
     }
 }
